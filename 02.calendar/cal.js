@@ -27,9 +27,9 @@ console.log("日 月 火 水 木 金 土");
 
 process.stdout.write("   ".repeat(firstDay.getDay()));
 calendarDays.forEach((day) => {
-  if (day.getDay() == 0) {
+  process.stdout.write(`${String(day.getDate()).padStart(2, " ")} `);
+  if (day.getDay() === 6) {
     process.stdout.write("\n");
   }
-  process.stdout.write(`${String(day.getDate()).padStart(2, " ")} `);
 });
 process.stdout.write("\n");
