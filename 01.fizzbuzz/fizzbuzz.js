@@ -8,6 +8,6 @@ for (let num = 1; num <= 20; num++) {
   } else if (num % 3 === 0) {
     console.log("Fizz");
   } else {
-    console.log(`${num}`);
+    console.log(String(num));
   }
 }
