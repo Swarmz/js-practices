@@ -26,9 +26,7 @@ for (
 
   if (day.getDay() !== 6 && day.getDate() !== lastDay.getDate()) {
     process.stdout.write(" ");
-  }
-
-  if (day.getDay() === 6 || day.getDate() === lastDay.getDate()) {
+  } else {
     process.stdout.write("\n");
   }
 }
