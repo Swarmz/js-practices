@@ -22,7 +22,12 @@ for (
   day <= lastDay;
   day.setDate(day.getDate() + 1)
 ) {
-  process.stdout.write(`${String(day.getDate()).padStart(2, " ")} `);
+  process.stdout.write(`${String(day.getDate()).padStart(2, " ")}`);
+  
+  if (day.getDay() !== 6 && day.getDate() !== lastDay.getDate()) {
+    process.stdout.write(" ");
+  }
+
   if (day.getDay() === 6) {
     process.stdout.write("\n");
   }
