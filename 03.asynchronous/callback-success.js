@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { db } from "./sqlite-promises.js";
+import { db } from "./db.js";
 
 db.run(
   `

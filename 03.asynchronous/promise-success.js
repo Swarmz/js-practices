@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import { db, run, get } from "./sqlite-promises.js";
+import { db } from "./db.js";
+import { run, get } from "./sqlite-promises.js";
 
 run(`
   CREATE TABLE books (
