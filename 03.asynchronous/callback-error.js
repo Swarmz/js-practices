@@ -19,7 +19,6 @@ db.run(
       db.get("SELECT author FROM books", (err, row) => {
         if (err) {
           console.error(err);
-          return;
         } else {
           console.log(row);
         }
