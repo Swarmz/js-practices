@@ -3,24 +3,29 @@
 import { db } from "./db.js";
 import { run, get } from "./sqlite-promises.js";
 
-run(`
+run(
+  db,
+  `
   CREATE TABLE books (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL UNIQUE
-  )`)
+  )`,
+)
   .then(() => {
-    return run("INSERT INTO books (title) VALUES (?)", ["Alice in Wonderland"]);
+    return run(db, "INSERT INTO books (title) VALUES (?)", [
+      "Alice in Wonderland",
+    ]);
   })
   .then((result) => {
     console.log(result.lastID);
 
-    return get("SELECT * FROM books WHERE id = ?", [result.lastID]);
+    return get(db, "SELECT * FROM books WHERE id = ?", [result.lastID]);
   })
   .then((row) => {
     console.log(row);
   })
   .then(() => {
-    return run("DROP TABLE books");
+    return run(db, "DROP TABLE books");
   })
   .finally(() => {
     db.close();

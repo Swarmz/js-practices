@@ -1,6 +1,4 @@
-import { db } from "./db.js";
-
-export function run(sql, params = []) {
+export function run(db, sql, params = []) {
   return new Promise((resolve, reject) => {
     db.run(sql, params, function (err) {
       if (err) {
@@ -12,7 +10,7 @@ export function run(sql, params = []) {
   });
 }
 
-export function get(sql, params = []) {
+export function get(db, sql, params = []) {
   return new Promise((resolve, reject) => {
     db.get(sql, params, (err, row) => {
       if (err) {

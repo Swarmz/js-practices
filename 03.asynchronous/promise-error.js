@@ -3,25 +3,28 @@
 import { db } from "./db.js";
 import { run, get } from "./sqlite-promises.js";
 
-run(`
+run(
+  db,
+  `
   CREATE TABLE books (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL UNIQUE
-  )`)
+  )`,
+)
   .then(() => {
-    return run("INSERT INTO books (title) VALUES (NULL)");
+    return run(db, "INSERT INTO books (title) VALUES (NULL)");
   })
   .catch((err) => {
     console.error(err);
   })
   .then(() => {
-    return get("SELECT author FROM books");
+    return get(db, "SELECT author FROM books");
   })
   .catch((err) => {
     console.error(err);
   })
   .then(() => {
-    return run("DROP TABLE books");
+    return run(db, "DROP TABLE books");
   })
   .finally(() => {
     db.close();
