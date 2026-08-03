@@ -12,9 +12,7 @@ run(
   )`,
 )
   .then(() => {
-    return run(db, "INSERT INTO books (title) VALUES (?)", [
-      "Alice in Wonderland",
-    ]);
+    run(db, "INSERT INTO books (title) VALUES (?)", ["Alice in Wonderland"]);
   })
   .then((result) => {
     console.log(result.lastID);

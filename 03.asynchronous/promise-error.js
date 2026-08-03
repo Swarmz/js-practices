@@ -12,19 +12,19 @@ run(
   )`,
 )
   .then(() => {
-    return run(db, "INSERT INTO books (title) VALUES (NULL)");
+    run(db, "INSERT INTO books (title) VALUES (NULL)");
   })
   .catch((err) => {
     console.error(err);
   })
   .then(() => {
-    return get(db, "SELECT author FROM books");
+    get(db, "SELECT author FROM books");
   })
   .catch((err) => {
     console.error(err);
   })
   .then(() => {
-    return run(db, "DROP TABLE books");
+    run(db, "DROP TABLE books");
   })
   .finally(() => {
     db.close();
