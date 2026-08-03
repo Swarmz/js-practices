@@ -23,8 +23,6 @@ run(
   })
   .then((row) => {
     console.log(row);
-  })
-  .then(() => {
     return run(db, "DROP TABLE books");
   })
   .finally(() => {
