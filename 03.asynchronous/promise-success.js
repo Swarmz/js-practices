@@ -11,9 +11,9 @@ run(
     title TEXT NOT NULL UNIQUE
   )`,
 )
-  .then(() => {
-    run(db, "INSERT INTO books (title) VALUES (?)", ["Alice in Wonderland"]);
-  })
+  .then(() =>
+    run(db, "INSERT INTO books (title) VALUES (?)", ["Alice in Wonderland"]),
+  )
   .then((result) => {
     console.log(result.lastID);
 

@@ -11,21 +11,15 @@ run(
     title TEXT NOT NULL UNIQUE
   )`,
 )
-  .then(() => {
-    run(db, "INSERT INTO books (title) VALUES (NULL)");
-  })
+  .then(() => run(db, "INSERT INTO books (title) VALUES (NULL)"))
   .catch((err) => {
     console.error(err);
   })
-  .then(() => {
-    get(db, "SELECT author FROM books");
-  })
+  .then(() => get(db, "SELECT author FROM books"))
   .catch((err) => {
     console.error(err);
   })
-  .then(() => {
-    run(db, "DROP TABLE books");
-  })
+  .then(() => run(db, "DROP TABLE books"))
   .finally(() => {
     db.close();
   });
