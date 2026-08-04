@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { db } from "./db.js";
-import { run, get } from "./sqlite-promises.js";
+import { run, get, close } from "./sqlite-promises.js";
 
 run(
   db,
@@ -20,6 +20,4 @@ run(
     console.error(err);
   })
   .then(() => run(db, "DROP TABLE books"))
-  .finally(() => {
-    db.close();
-  });
+  .finally(() => close(db));
