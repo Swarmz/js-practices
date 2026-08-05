@@ -22,9 +22,8 @@ try {
     result.lastID,
   ]);
   console.log(row);
-} catch (err) {
-  console.error(err);
-} finally {
+
   await run(db, "DROP TABLE books");
+} finally {
   await close(db);
 }
