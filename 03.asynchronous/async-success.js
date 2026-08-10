@@ -6,11 +6,7 @@ import { run, get, close } from "./sqlite-promises.js";
 try {
   await run(
     db,
-    `
-    CREATE TABLE books (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL UNIQUE
-    )`,
+    "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   );
 
   const result = await run(db, "INSERT INTO books (title) VALUES (?)", [

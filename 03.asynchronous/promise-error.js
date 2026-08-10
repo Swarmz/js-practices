@@ -5,11 +5,7 @@ import { run, get, close } from "./sqlite-promises.js";
 
 run(
   db,
-  `
-  CREATE TABLE books (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL UNIQUE
-  )`,
+  "CREATE TABLE books (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 )
   .then(() => run(db, "INSERT INTO books (title) VALUES (NULL)"))
   .catch((err) => {
