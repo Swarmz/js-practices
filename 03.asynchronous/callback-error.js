@@ -18,6 +18,7 @@ db.run(
         } else {
           console.log(row);
         }
+
         db.run("DROP TABLE books", () => {
           db.close();
         });
