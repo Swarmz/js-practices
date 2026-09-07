@@ -10,10 +10,10 @@ run(
   .then(() => run(db, "INSERT INTO books (title) VALUES (NULL)"))
   .catch((err) => {
     console.error(err);
+    return get(db, "SELECT author FROM books");
   })
-  .then(() => get(db, "SELECT author FROM books"))
   .catch((err) => {
     console.error(err);
+    return run(db, "DROP TABLE books");
   })
-  .then(() => run(db, "DROP TABLE books"))
   .finally(() => close(db));
