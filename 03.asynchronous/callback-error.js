@@ -7,14 +7,14 @@ db.run(
   () => {
     db.run("INSERT INTO books (title) VALUES (NULL)", function (err) {
       if (err) {
-        console.error(err);
+        console.error(err.message);
       } else {
         console.log(this.lastID);
       }
 
       db.get("SELECT author FROM books", (err, row) => {
         if (err) {
-          console.error(err);
+          console.error(err.message);
         } else {
           console.log(row);
         }

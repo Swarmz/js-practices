@@ -14,7 +14,7 @@ try {
     console.log(result.lastID);
   } catch (err) {
     if (err?.code === "SQLITE_CONSTRAINT") {
-      console.error(err);
+      console.error(err.message);
     } else {
       throw err;
     }
@@ -25,7 +25,7 @@ try {
     console.log(row);
   } catch (err) {
     if (err?.code === "SQLITE_ERROR") {
-      console.error(err);
+      console.error(err.message);
     } else {
       throw err;
     }
