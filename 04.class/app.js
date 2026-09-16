@@ -1,17 +1,14 @@
 #!/usr/bin/env node
 
 import sqlite3 from "sqlite3";
-import Memo from "./Memo.js";
 import minimist from "minimist";
 import readline from "readline";
 import select from "@inquirer/select";
+import MemoRepository from "./MemoRepository.js";
 
 const args = minimist(process.argv.slice(2));
 const db = new sqlite3.Database("./memo_data.db");
-
-db.run(
-  "CREATE TABLE IF NOT EXISTS memos (id INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT NOT NULL)",
-);
+const repository = new MemoRepository(db)
 
 const addMemo = () => {
   console.log("Press Ctrl+D on an empty line to save.");
@@ -23,37 +20,25 @@ const addMemo = () => {
 
   rl.on("line", (line) => lines.push(line));
   rl.on("close", () => {
-    const value = lines.join("\n");
-    db.run("INSERT INTO memos (body) VALUES (?)", value, () => {
-      db.close();
-    });
-  });
-};
-
-const buildMemosList = () => {
-  return new Promise((resolve, reject) => {
-    db.all("SELECT * FROM memos", (err, rows) => {
-      if (err) return reject(err);
-
-      resolve(rows.map((row) => new Memo(row.id, row.body)));
-    });
+    const body = lines.join("\n");
+    repository.addMemo(body);
+    db.close();
   });
 };
 
 const displayMemos = async () => {
-  const memos = await buildMemosList();
-  memos.forEach((m) => console.log(m.firstLine()));
+  const titles = await repository.memoTitles();
+  titles.forEach((title) => console.log(title));
 };
 
 const referenceMemos = async () => {
-  const memos = await buildMemosList();
+  const memoList = await repository.getMemos();
 
   const selectedMemo = await select({
     message: "Choose a note you want to see:",
-    choices: memos.map((memo) => ({
+    choices: memoList.map((memo) => ({
       name: memo.firstLine(),
       value: memo.body,
-      description: memo.body,
     })),
     theme: {
       style: {
@@ -61,11 +46,12 @@ const referenceMemos = async () => {
       },
     },
   });
-  return console.log(selectedMemo);
+
+  console.log(selectedMemo);
 };
 
 const deleteMemo = async () => {
-  const memos = await buildMemosList();
+  const memos = await repository.getMemos();
 
   const selectedMemo = await select({
     message: "Choose a note you want to delete:",
@@ -76,8 +62,10 @@ const deleteMemo = async () => {
     })),
   });
 
-  db.run("DELETE FROM memos WHERE id = ?", [selectedMemo]);
+  repository.deleteMemo(selectedMemo);
 };
+
+repository.createTable();
 
 if (args.l) {
   displayMemos();
