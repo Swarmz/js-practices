@@ -6,9 +6,18 @@ export default class MemoRepository {
   }
 
   createTable() {
-    this.db.run(
-      "CREATE TABLE IF NOT EXISTS memos (id INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT NOT NULL)",
-    );
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        "CREATE TABLE IF NOT EXISTS memos (id INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT NOT NULL)",
+        function (err) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        },
+      );
+    });
   }
 
   getMemos() {
@@ -21,16 +30,31 @@ export default class MemoRepository {
     });
   }
 
-  addMemo(body) {
-    this.db.run("INSERT INTO memos (body) VALUES (?)", body);
+  insertMemo(body) {
+    return new Promise((resolve, reject) => {
+      this.db.run("INSERT INTO memos (body) VALUES (?)", body, function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
   }
 
   deleteMemo(memo) {
-    this.db.run("DELETE FROM memos WHERE id = ?", [memo]);
+    return new Promise((resolve, reject) => {
+      this.db.run("DELETE FROM memos WHERE id = ?", [memo], function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
   }
 
   memoTitles() {
-    return this.getMemos()
-      .then((memos) => memos.map((m) => m.firstLine()));
+    return this.getMemos().then((memos) => memos.map((m) => m.firstLine()));
   }
 }
