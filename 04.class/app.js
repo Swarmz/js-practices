@@ -4,6 +4,7 @@ import sqlite3 from "sqlite3";
 import minimist from "minimist";
 import MemoRepository from "./MemoRepository.js";
 import CLI from "./CLI.js";
+import { close } from "./sqlite-promises.js";
 
 const args = minimist(process.argv.slice(2));
 const db = new sqlite3.Database("./memo_data.db");
@@ -14,7 +15,7 @@ try {
   await repository.createTable();
 
   if (args.l) {
-    await cli.displayMemos();
+    await cli.listMemos();
   } else if (args.r) {
     await cli.referenceMemos();
   } else if (args.d) {
@@ -26,5 +27,5 @@ try {
 } catch (err) {
   console.error(err.message);
 } finally {
-  db.close();
+  await close(db);
 }

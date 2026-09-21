@@ -4,7 +4,7 @@ export default class Memo {
     this.body = body;
   }
 
-  firstLine() {
+  title() {
     const lines = this.body.split("\n");
     return lines[0];
   }

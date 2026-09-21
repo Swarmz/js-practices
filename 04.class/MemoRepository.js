@@ -1,4 +1,5 @@
 import Memo from "./Memo.js";
+import { all, run } from "./sqlite-promises.js";
 
 export default class MemoRepository {
   constructor(db) {
@@ -6,55 +7,22 @@ export default class MemoRepository {
   }
 
   createTable() {
-    return new Promise((resolve, reject) => {
-      this.db.run(
-        "CREATE TABLE IF NOT EXISTS memos (id INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT NOT NULL)",
-        function (err) {
-          if (err) {
-            reject(err);
-          } else {
-            resolve();
-          }
-        },
-      );
-    });
+    return run(
+      this.db,
+      "CREATE TABLE IF NOT EXISTS memos (id INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT NOT NULL)",
+    );
   }
 
-  getMemos() {
-    return new Promise((resolve, reject) => {
-      this.db.all("SELECT * FROM memos", (err, rows) => {
-        if (err) return reject(err);
-
-        resolve(rows.map((row) => new Memo(row.id, row.body)));
-      });
-    });
+  async getMemos() {
+    const rows = await all(this.db, "SELECT * FROM memos");
+    return rows.map((row) => new Memo(row.id, row.body));
   }
 
   insertMemo(body) {
-    return new Promise((resolve, reject) => {
-      this.db.run("INSERT INTO memos (body) VALUES (?)", body, function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
+    return run(this.db, "INSERT INTO memos (body) VALUES (?)", body);
   }
 
   deleteMemo(memo) {
-    return new Promise((resolve, reject) => {
-      this.db.run("DELETE FROM memos WHERE id = ?", [memo], function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-  }
-
-  memoTitles() {
-    return this.getMemos().then((memos) => memos.map((m) => m.firstLine()));
+    return run(this.db, "DELETE FROM memos WHERE id = ?", memo);
   }
 }

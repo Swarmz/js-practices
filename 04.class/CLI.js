@@ -6,38 +6,23 @@ export default class CLI {
     this.repo = repository;
   }
 
-  readInput() {
-    return new Promise((resolve) => {
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-      const lines = [];
-
-      rl.on("line", (line) => lines.push(line));
-      rl.on("close", () => {
-        resolve(lines.join("\n"));
-      });
-    });
-  }
-
   async addMemo() {
-    const body = await this.readInput();
+    const body = await this.#getMemoBody();
     await this.repo.insertMemo(body);
   }
 
-  async displayMemos() {
-    const titles = await this.repo.memoTitles();
-    titles.forEach((title) => console.log(title));
+  async listMemos() {
+    const memos = await this.repo.getMemos();
+    memos.forEach((memo) => console.log(memo.title()));
   }
 
   async referenceMemos() {
-    const memoList = await this.repo.getMemos();
+    const memos = await this.repo.getMemos();
 
     const selectedMemo = await select({
       message: "Choose a note you want to see:",
-      choices: memoList.map((memo) => ({
-        name: memo.firstLine(),
+      choices: memos.map((memo) => ({
+        name: memo.title(),
         value: memo.body,
       })),
       theme: {
@@ -56,12 +41,35 @@ export default class CLI {
     const selectedMemo = await select({
       message: "Choose a note you want to delete:",
       choices: memos.map((memo) => ({
-        name: memo.firstLine(),
+        name: memo.title(),
         value: memo.id,
         description: memo.body,
       })),
     });
 
     await this.repo.deleteMemo(selectedMemo);
+  }
+
+  #getMemoBody() {
+    return new Promise((resolve, reject) => {
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+
+      const lines = [];
+
+      rl.on("line", (line) => lines.push(line));
+
+      rl.on("close", () => {
+        const body = lines.join("\n");
+
+        if (body.trim() === "") {
+          reject(new Error("Memo cannot be blank."));
+        } else {
+          resolve(body);
+        }
+      });
+    });
   }
 }
