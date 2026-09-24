@@ -17,6 +17,7 @@ run(
   })
   .then((row) => {
     console.log(row);
+
     return run(db, "DROP TABLE books");
   })
   .finally(() => close(db));
