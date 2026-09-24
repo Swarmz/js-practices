@@ -15,6 +15,7 @@ export default class MemoRepository {
 
   async getMemos() {
     const rows = await all(this.db, "SELECT * FROM memos");
+
     return rows.map((row) => new Memo(row.id, row.body));
   }
 

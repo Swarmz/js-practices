@@ -8,11 +8,13 @@ export default class CLI {
 
   async addMemo() {
     const body = await this.#getMemoBody();
+
     await this.repo.insertMemo(body);
   }
 
   async listMemos() {
     const memos = await this.repo.getMemos();
+
     memos.forEach((memo) => console.log(memo.title()));
   }
 
