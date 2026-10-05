@@ -5,9 +5,12 @@ import minimist from "minimist";
 import MemoRepository from "./memoRepository.js";
 import CLI from "./cli.js";
 import { close } from "./sqlitePromises.js";
+import path from "node:path";
 
 const args = minimist(process.argv.slice(2));
-const db = new sqlite3.Database("./memoData.db");
+const db = new sqlite3.Database(
+  path.join(import.meta.dirname, "./memoData.db"),
+);
 const repository = new MemoRepository(db);
 const cli = new CLI(repository);
 
