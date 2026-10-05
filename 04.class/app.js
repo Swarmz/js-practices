@@ -25,6 +25,7 @@ try {
   }
 } catch (err) {
   console.error(err.message);
+  process.exitCode = 1;
 } finally {
   await close(db);
 }
