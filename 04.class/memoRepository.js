@@ -23,7 +23,7 @@ export default class MemoRepository {
     return run(this.db, "INSERT INTO memos (body) VALUES (?)", body);
   }
 
-  deleteMemo(memo) {
-    return run(this.db, "DELETE FROM memos WHERE id = ?", memo);
+  deleteMemo(memoId) {
+    return run(this.db, "DELETE FROM memos WHERE id = ?", memoId);
   }
 }

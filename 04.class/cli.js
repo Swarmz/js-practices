@@ -21,7 +21,7 @@ export default class CLI {
   async referenceMemos() {
     const memos = await this.repo.getMemos();
 
-    const selectedMemo = await select({
+    const selectedMemoBody = await select({
       message: "Choose a note you want to see:",
       choices: memos.map((memo) => ({
         name: memo.title(),
@@ -34,13 +34,13 @@ export default class CLI {
       },
     });
 
-    console.log(selectedMemo);
+    console.log(selectedMemoBody);
   }
 
   async deleteMemo() {
     const memos = await this.repo.getMemos();
 
-    const selectedMemo = await select({
+    const selectedMemoId = await select({
       message: "Choose a note you want to delete:",
       choices: memos.map((memo) => ({
         name: memo.title(),
@@ -49,7 +49,7 @@ export default class CLI {
       })),
     });
 
-    await this.repo.deleteMemo(selectedMemo);
+    await this.repo.deleteMemo(selectedMemoId);
   }
 
   #getMemoBody() {
