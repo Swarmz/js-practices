@@ -1,5 +1,5 @@
-import Memo from "./Memo.js";
-import { all, run } from "./sqlite-promises.js";
+import Memo from "./memo.js";
+import { all, run } from "./sqlitePromises.js";
 
 export default class MemoRepository {
   constructor(db) {

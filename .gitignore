@@ -125,4 +125,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-04.class/memo_data.db
+04.class/memoData.db
