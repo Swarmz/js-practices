@@ -21,7 +21,6 @@ try {
   } else if (args.d) {
     await cli.deleteMemo();
   } else {
-    console.log("Press Ctrl+D on an empty line to save.");
     await cli.addMemo();
   }
 } catch (err) {
