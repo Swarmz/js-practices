@@ -67,7 +67,7 @@ export default class CLI {
         const body = lines.join("\n");
 
         if (body.trim() === "") {
-          reject(new Error("Memo cannot be blank."));
+          reject(new Error("Notes cannot be blank."));
         } else {
           resolve(body);
         }
