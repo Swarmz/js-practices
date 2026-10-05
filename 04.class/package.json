@@ -13,6 +13,7 @@
   "type": "module",
   "dependencies": {
     "@inquirer/select": "^5.2.4",
+    "minimist": "^1.2.8",
     "sqlite3": "^6.0.1"
   }
 }
