@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+import sqlite3 from "sqlite3";
+import minimist from "minimist";
+import MemoRepository from "./memoRepository.js";
+import CLI from "./cli.js";
+import { close } from "./sqlitePromises.js";
+import path from "node:path";
+
+const args = minimist(process.argv.slice(2));
+const db = new sqlite3.Database(
+  path.join(import.meta.dirname, "./memoData.db"),
+);
+const repository = new MemoRepository(db);
+const cli = new CLI(repository);
+
+try {
+  await repository.createTable();
+
+  if (args.l) {
+    await cli.listMemos();
+  } else if (args.r) {
+    await cli.referenceMemos();
+  } else if (args.d) {
+    await cli.deleteMemo();
+  } else {
+    await cli.addMemo();
+  }
+} catch (err) {
+  console.error(err.message);
+  process.exitCode = 1;
+} finally {
+  await close(db);
+}
